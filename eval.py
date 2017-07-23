@@ -9,13 +9,14 @@ import data_helpers
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
 import csv
+from pprint import  pprint
 
 # Parameters
 # ==================================================
 
 # Data Parameters
-tf.flags.DEFINE_string("positive_data_file", "./data/incall_exp2/incall_exp2.pos", "Data source for the positive data.")
-tf.flags.DEFINE_string("negative_data_file", "./data/incall_exp2/incall_exp2.neg", "Data source for the positive data.")
+tf.flags.DEFINE_string("positive_data_file", "./data/incall_exp2/incall_test140.pos", "Data source for the positive data.")
+tf.flags.DEFINE_string("negative_data_file", "./data/incall_exp2/incall_test140.neg", "Data source for the positive data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
@@ -80,12 +81,32 @@ with graph.as_default():
         for x_test_batch in batches:
             batch_predictions = sess.run(predictions, {input_x: x_test_batch, dropout_keep_prob: 1.0})
             all_predictions = np.concatenate([all_predictions, batch_predictions])
+        pprint(all_predictions)
+        pprint(y_test)
 
 # Print accuracy if y_test is defined
 if y_test is not None:
     correct_predictions = float(sum(all_predictions == y_test))
+    tp = 0
+    fn = 0
+    tn = 0
+    fp = 0
+    for gt,pd in zip(y_test,all_predictions):
+        if gt == pd and gt == 1:
+            tp +=1
+        if gt != pd and gt == 1:
+            fn += 1
+        if gt == pd and gt != 1:
+            tn += 1
+        if gt != pd and gt != 1:
+            fp +=1
+    total = len(y_test)
+    precision = float(tp/(tp+fp))
+    recall =  float(tp/(tp+fn))
+    f1 = 2*precision*recall/(precision+recall)
     print("Total number of test examples: {}".format(len(y_test)))
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
+    print ("{:}|{:}|{:}|{:}|{:}|{:}|{:.2f}|{:.2f}|{:.2f}".format(tp,fn,tn,fp,total,correct_predictions,precision,recall,f1))
 
 # Save the evaluation to a csv
 predictions_human_readable = np.column_stack((np.array(x_raw), all_predictions))
