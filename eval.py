@@ -15,8 +15,8 @@ from pprint import  pprint
 # ==================================================
 
 # Data Parameters
-tf.flags.DEFINE_string("positive_data_file", "./data/incall_exp2/incall_test140.pos", "Data source for the positive data.")
-tf.flags.DEFINE_string("negative_data_file", "./data/incall_exp2/incall_test140.neg", "Data source for the positive data.")
+tf.flags.DEFINE_string("positive_data_file", "./data/incall_exp2/small/dataset_140_test.pos", "Data source for the positive data.")
+tf.flags.DEFINE_string("negative_data_file", "./data/incall_exp2/small/dataset_140_test.neg", "Data source for the positive data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
@@ -86,7 +86,7 @@ with graph.as_default():
 
 # Print accuracy if y_test is defined
 if y_test is not None:
-    correct_predictions = float(sum(all_predictions == y_test))
+    correct_predictions = int(sum(all_predictions == y_test))
     tp = 0
     fn = 0
     tn = 0
@@ -106,7 +106,7 @@ if y_test is not None:
     f1 = 2*precision*recall/(precision+recall)
     print("Total number of test examples: {}".format(len(y_test)))
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
-    print ("{:}|{:}|{:}|{:}|{:}|{:}|{:.2f}|{:.2f}|{:.2f}".format(tp,fn,tn,fp,total,correct_predictions,precision,recall,f1))
+    print ("{:} | {:} | {:} | {:} | {:} | {:} | {:.2f} | {:.2f} | {:.2f} |".format(tp,fn,tn,fp,total,correct_predictions,precision,recall,f1))
 
 # Save the evaluation to a csv
 predictions_human_readable = np.column_stack((np.array(x_raw), all_predictions))
