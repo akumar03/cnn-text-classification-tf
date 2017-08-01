@@ -1,7 +1,7 @@
 import random, sys
 
-folder = "/Users/anoopk/code/cnn-text-classification-tf/data/outcall/"
-input_file = folder+ "dataset_140_outcall_label_ak.txt"
+folder = "/Users/anoopk/code/cnn-text-classification-tf/data/movement/"
+input_file = folder+ "dataset_movement_140_label_ak.txt"
 pct_split = 0.8
 train_file = folder+"dataset_140_train.txt"
 test_file = folder+"dataset_140_test.txt"

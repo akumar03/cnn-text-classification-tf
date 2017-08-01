@@ -15,8 +15,8 @@ from pprint import  pprint
 # ==================================================
 
 # Data Parameters
-tf.flags.DEFINE_string("positive_data_file", "./data/outcall/dataset_140_test.pos", "Data source for the positive data.")
-tf.flags.DEFINE_string("negative_data_file", "./data/outcall/dataset_140_test.neg", "Data source for the positive data.")
+tf.flags.DEFINE_string("positive_data_file", "./data/movement/dataset_140_test.pos", "Data source for the positive data.")
+tf.flags.DEFINE_string("negative_data_file", "./data/movement/dataset_140_test.neg", "Data source for the positive data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
