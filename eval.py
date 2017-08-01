@@ -15,8 +15,8 @@ from pprint import  pprint
 # ==================================================
 
 # Data Parameters
-tf.flags.DEFINE_string("positive_data_file", "./data/movement/dataset_140_test.pos", "Data source for the positive data.")
-tf.flags.DEFINE_string("negative_data_file", "./data/movement/dataset_140_test.neg", "Data source for the positive data.")
+tf.flags.DEFINE_string("positive_data_file", "./data/risky_activity/dataset_140_test.pos", "Data source for the positive data.")
+tf.flags.DEFINE_string("negative_data_file", "./data/risky_activity/dataset_140_test.neg", "Data source for the positive data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
@@ -101,9 +101,15 @@ if y_test is not None:
         if gt != pd and gt != 1:
             fp +=1
     total = len(y_test)
-    precision = float(tp/(tp+fp))
+    if tp+fp > 0:
+        precision = float(tp/(tp+fp))
+    else:
+        precision = 0
     recall =  float(tp/(tp+fn))
-    f1 = 2*precision*recall/(precision+recall)
+    if precision+recall > 0:
+        f1 = 2*precision*recall/(precision+recall)
+    else:
+        f1 = 0
     print("Total number of test examples: {}".format(len(y_test)))
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
     print ("{:} | {:} | {:} | {:} | {:} | {:} | {:.2f} | {:.2f} | {:.2f} |".format(tp,fn,tn,fp,total,correct_predictions,precision,recall,f1))
